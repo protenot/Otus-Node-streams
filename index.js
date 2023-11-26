@@ -7,19 +7,12 @@ const fs = require("fs");
   const writeStream = fs.createWriteStream("output-text", {
     encoding: "utf8",
   });
+  let data = "";
+  for await (const item of readStream) {
+    data += item;
+  }
 
-  const data = await new Promise((resolve, reject) => {
-    let result = "";
-    readStream.on("data", (chunk) => {
-      result += chunk;
-    });
-    readStream.on("end", () => {
-      resolve(result);
-    });
-    readStream.on("error", (error) => {
-      reject(error);
-    });
-  });
+  console.log(data);
 
   const words = data
     .toLowerCase()
